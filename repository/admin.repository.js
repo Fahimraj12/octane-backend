@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const Admin = require('../models/Admin');
 
 class adminRepository {
@@ -35,7 +36,7 @@ class adminRepository {
 
       return {
         status: "success",
-        result: newAdmin,
+        result: "Admin created successfully",
       };
     } catch (error) {
       return {
@@ -90,6 +91,22 @@ class adminRepository {
         status: "error",
         result: error.message,
       };
+    }
+  }
+  // LOGIN ke liye admin find karo
+  async findAdminForLogin(identifier) {
+    try {
+      const admin = await Admin.findOne({
+        where: {
+          [Op.or]: [
+            { email: identifier },
+            { mobile: identifier }
+          ]
+        }
+      });
+      return admin;
+    } catch (error) {
+      throw error;
     }
   }
 }

@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const Admin = sequelize.define(
-  "Admin",
+const Member = sequelize.define(
+  "Member",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -21,23 +21,36 @@ const Admin = sequelize.define(
       type: DataTypes.STRING(15),
       allowNull: false,
     },
-    role: {
-      type: DataTypes.ENUM('admin', 'frontdesk'),
+    dob: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    gender: {
+      type: DataTypes.ENUM('male', 'female', 'other'),
       allowNull: false,
     },
     status: {
       type: DataTypes.ENUM('active', 'inactive'),
       allowNull: false,
     },
-    password: {
-      type: DataTypes.STRING,
+    blood_group: {
+      type: DataTypes.ENUM('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
       allowNull: false,
+    },
+    student: {
+      type: DataTypes.ENUM('yes', 'no'),
+      allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   },
   {
-    tableName: "admin", // ✅ correct table
+    tableName: "Members", // ✅ correct table
     timestamps: false,
   },
 );
 
-module.exports = Admin;
+module.exports = Member;

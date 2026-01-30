@@ -1,32 +1,36 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const User = sequelize.define(
-  "User",
+const Service = sequelize.define(
+  "Service",
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
+    title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
+    description: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
-    password: {
-      type: DataTypes.STRING,
+    status: {
+      type: DataTypes.ENUM('active', 'inactive'),
       allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   },
   {
-    tableName: "users",
-    timestamps: true,
-  }
+    tableName: "Service", // ✅ correct table
+    timestamps: false,
+  },
 );
 
-module.exports = User;
+module.exports = Service;
