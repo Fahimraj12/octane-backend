@@ -1,6 +1,8 @@
 const express = require("express");
 const sequelize = require("./config/database");
 require("dotenv").config();
+const cors = require("cors");
+
 // const dropTables = require("./config/dropTables");
 const adminRouter = require('./routes/admin.routes');
 const trainerRouter = require('./routes/trainer.routes');
@@ -10,6 +12,9 @@ const serviceRouter = require("./routes/service.routes");
 const invoiceRouter = require("./routes/invoice.routes");
 const paymentRouter = require("./routes/payment.routes");
 const inquiriesRouter = require("./routes/inquiries.routes");
+const membershippackageRouter = require("./routes/membershippackage.routes");
+const usermembershipRouter = require("./routes/usermembership.routes");
+
 
 // import models (IMPORTANT)
 require("./models/Admin");
@@ -20,20 +25,24 @@ require("./models/Service");
 require("./models/Invoice");
 require("./models/Payment");
 require("./models/Inquiries");
+require("./models/MembershipPackage");
+require("./models/UserMembership");
 // require associations
 // require("./associations");
 const app = express();
 app.use(express.json());
-
+app.use(cors());
 // model
-app.use("/admin", adminRouter);
-app.use("/trainer", trainerRouter);
-app.use("/member", memberRouter);
-app.use("/package", packageRouter);
-app.use("/service", serviceRouter);
-app.use("/invoice", invoiceRouter);
-app.use("/payment", paymentRouter);
-app.use("/inquiries", inquiriesRouter);
+app.use("/api/admin", adminRouter);
+app.use("/api/trainer", trainerRouter);
+app.use("/api/member", memberRouter);
+app.use("/api/package", packageRouter);
+app.use("/api/service", serviceRouter);
+app.use("/api/invoice", invoiceRouter);
+app.use("/api/payment", paymentRouter);
+app.use("/api/inquiries", inquiriesRouter);
+app.use("/api/membershippackage", membershippackageRouter);
+app.use("/api/usermembership", usermembershipRouter);
 
 // test route
 app.get("/", (req, res) => {
