@@ -1,10 +1,13 @@
 const Package = require("../models/Package");
 
 class PackageRepository {
-  // GET all packages
+
+  // ===========================
+  // GET ALL PACKAGES
+  // ===========================
   async getAllPackage() {
     try {
-      const pkg = await Package.findAll({
+      const packages = await Package.findAll({
         attributes: [
           "id",
           "service_title",
@@ -19,9 +22,12 @@ class PackageRepository {
 
       return {
         status: "success",
-        result: pkg,
+        result: packages,
       };
+
     } catch (error) {
+      console.error("GET PACKAGE ERROR:", error);
+
       return {
         status: "error",
         result: error.message,
@@ -29,7 +35,10 @@ class PackageRepository {
     }
   }
 
-  // CREATE package
+
+  // ===========================
+  // CREATE PACKAGE
+  // ===========================
   async createPackage(data) {
     try {
       const existingPackage = await Package.findOne({
@@ -47,9 +56,12 @@ class PackageRepository {
 
       return {
         status: "success",
-        result: "newPackage added",
+        result: newPackage,
       };
+
     } catch (error) {
+      console.error("CREATE PACKAGE ERROR:", error);
+
       return {
         status: "error",
         result: error.message,
@@ -57,7 +69,10 @@ class PackageRepository {
     }
   }
 
-  // UPDATE package
+
+  // ===========================
+  // UPDATE PACKAGE
+  // ===========================
   async updatePackage(id, data) {
     try {
       const pkg = await Package.findByPk(id);
@@ -73,9 +88,12 @@ class PackageRepository {
 
       return {
         status: "success",
-        result: "Package updated successfully",
+        result: updatedPackage,
       };
+
     } catch (error) {
+      console.error("UPDATE PACKAGE ERROR:", error);
+
       return {
         status: "error",
         result: error.message,
@@ -83,7 +101,10 @@ class PackageRepository {
     }
   }
 
-  // DELETE package
+
+  // ===========================
+  // DELETE PACKAGE
+  // ===========================
   async deletePackage(id) {
     try {
       const pkg = await Package.findByPk(id);
@@ -101,13 +122,17 @@ class PackageRepository {
         status: "success",
         result: "Package deleted successfully",
       };
+
     } catch (error) {
+      console.error("DELETE PACKAGE ERROR:", error);
+
       return {
         status: "error",
         result: error.message,
       };
     }
   }
+
 }
 
 module.exports = new PackageRepository();
