@@ -23,7 +23,7 @@ class InquiriesRepository {
       const inquiry = await Inquiries.create(data);
       return {
         status: "success",
-        result: inquiry,
+        result: "inquiry created successfully",
       };
     } catch (error) {
       return {
@@ -49,7 +49,7 @@ class InquiriesRepository {
 
       return {
         status: "success",
-        result: inquiry,
+        result: "Inquiry status updated successfully",
       };
     } catch (error) {
       return {
@@ -74,7 +74,7 @@ class InquiriesRepository {
 
       return {
         status: "success",
-        result: inquiry,
+        result: "Inquiry updated successfully",
       };
     } catch (error) {
       return {

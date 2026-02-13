@@ -23,7 +23,7 @@ class UserMembershipRepository {
       const newMembership = await UserMembership.create(data);
       return {
         status: "success",
-        result: newMembership,
+        result: "newMembership created successfully",
       };
     } catch (error) {
       return {
@@ -47,7 +47,7 @@ class UserMembershipRepository {
       await membershipRecord.update(data);
       return {
         status: "success",
-        result: membershipRecord,
+        result: "membershipRecord updated successfully",
       };
     }
     catch (error) {

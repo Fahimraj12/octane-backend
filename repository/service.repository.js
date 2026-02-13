@@ -58,7 +58,7 @@ class ServiceRepository {
 
       return {
         status: "success",
-        result: newService,
+        result: "newService added",
       };
     } catch (error) {
       return {
@@ -83,7 +83,7 @@ class ServiceRepository {
       const updatedService = await service.update(data);
       return {
         status: "ok",
-        result: updatedService,
+        result: "Updated Service Successfully",
       };
     } catch (error) {
       return {

@@ -14,6 +14,7 @@ const paymentRouter = require("./routes/payment.routes");
 const inquiriesRouter = require("./routes/inquiries.routes");
 const membershippackageRouter = require("./routes/membershippackage.routes");
 const usermembershipRouter = require("./routes/usermembership.routes");
+const dashboardRoutes = require("./routes/dashboard.routes");
 
 
 // import models (IMPORTANT)
@@ -43,6 +44,8 @@ app.use("/api/payment", paymentRouter);
 app.use("/api/inquiries", inquiriesRouter);
 app.use("/api/membershippackage", membershippackageRouter);
 app.use("/api/usermembership", usermembershipRouter);
+app.use("/api/dashboard", dashboardRoutes);
+
 
 // test route
 app.get("/", (req, res) => {

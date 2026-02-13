@@ -58,7 +58,7 @@ class MemberRepository {
 
       return {
         status: "success",
-        result: newMember,
+        result: "newMember created successfully",
       };
     } catch (error) {
       return {
@@ -82,7 +82,7 @@ class MemberRepository {
       const updatedMember = await member.update(data);
       return {
         status: "ok",
-        result: updatedMember,
+        result: "updatedMember updated successfully",
       };
     } catch (error) {
       return {

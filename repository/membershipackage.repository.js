@@ -23,7 +23,7 @@ class MembershipPackageRepository {
       const newPackage = await MembershipPackages.create(data);
       return {
         status: "success",
-        result: newPackage,
+        result: "newPackage added successfully",
       };
     } catch (error) {
       return {
@@ -47,7 +47,7 @@ class MembershipPackageRepository {
       await packageRecord.update(data);
       return {
         status: "success",
-        result: packageRecord,
+        result: "packageRecord updated successfully",
       };
     }
     catch (error) {

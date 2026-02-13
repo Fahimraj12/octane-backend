@@ -35,7 +35,7 @@ class trainerRepository {
 
       return {
         status: "success",
-        result: newTrainer,
+        result: "New trainer created successfully",
       };
     } catch (error) {
       return {
@@ -59,7 +59,7 @@ class trainerRepository {
       await trainerRecord.update(data);
       return {
         status: "success",
-        result: trainerRecord,
+        result: "Success",
       };
     } catch (error) {
       return {

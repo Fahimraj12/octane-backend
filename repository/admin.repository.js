@@ -60,7 +60,7 @@ class adminRepository {
       const updatedAdmin = await admin.update(data);
       return {
         status: "ok",
-        result: updatedAdmin,
+        result: "updatedAdmin updated successfully",
       };
     } catch (error) {
       return {

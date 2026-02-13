@@ -47,7 +47,7 @@ class PackageRepository {
 
       return {
         status: "success",
-        result: newPackage,
+        result: "newPackage added",
       };
     } catch (error) {
       return {
@@ -73,7 +73,7 @@ class PackageRepository {
 
       return {
         status: "ok",
-        result: updatedPackage,
+        result: "Package updated successfully",
       };
     } catch (error) {
       return {
