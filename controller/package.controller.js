@@ -5,7 +5,7 @@ exports.getPackage = async (req, res) => {
   try {
     const response = await PackageRepository.getAllPackage();
 
-    if (response.status !== "ok") {
+    if (response.status !== "success") {
       return res.status(500).json(response);
     }
 
@@ -17,7 +17,7 @@ exports.getPackage = async (req, res) => {
     }));
 
     res.status(200).json({
-      status: "ok",
+      status: "success",
       result: data,
     });
   } catch (error) {
