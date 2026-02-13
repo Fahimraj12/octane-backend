@@ -18,7 +18,7 @@ class PackageRepository {
       });
 
       return {
-        status: "ok",
+        status: "success",
         result: pkg,
       };
     } catch (error) {
@@ -72,7 +72,7 @@ class PackageRepository {
       const updatedPackage = await pkg.update(data);
 
       return {
-        status: "ok",
+        status: "success",
         result: "Package updated successfully",
       };
     } catch (error) {
@@ -98,7 +98,7 @@ class PackageRepository {
       await pkg.destroy();
 
       return {
-        status: "ok",
+        status: "success",
         result: "Package deleted successfully",
       };
     } catch (error) {

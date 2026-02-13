@@ -6,7 +6,7 @@ class trainerRepository {
     try {
       const trainers = await trainer.findAll();
       return {
-        status: "ok",
+        status: "success",
         result: trainers,
       };
     } catch (error) {

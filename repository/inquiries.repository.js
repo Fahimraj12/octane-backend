@@ -6,7 +6,7 @@ class InquiriesRepository {
     try {
       const inquiries = await Inquiries.findAll();
       return {
-        status: "ok",
+        status: "success",
         result: inquiries,
       };
     } catch (error) {

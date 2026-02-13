@@ -7,7 +7,7 @@ class adminRepository {
     try {
       const admins = await Admin.findAll();
       return {
-        status: "ok",
+        status: "success",
         result: admins,
       };
     } catch (error) {
@@ -59,7 +59,7 @@ class adminRepository {
 
       const updatedAdmin = await admin.update(data);
       return {
-        status: "ok",
+        status: "success",
         result: "updatedAdmin updated successfully",
       };
     } catch (error) {
@@ -83,7 +83,7 @@ class adminRepository {
 
       await admin.destroy();
       return {
-        status: "ok",
+        status: "success",
         result: "Admin deleted successfully",
       };
     } catch (error) {

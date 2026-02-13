@@ -6,7 +6,7 @@ class MembershipPackageRepository {
     try {
       const packages = await MembershipPackages.findAll();
       return {
-        status: "ok",
+        status: "success",
         result: packages,
       };
     } catch (error) {

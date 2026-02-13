@@ -6,7 +6,7 @@ class UserMembershipRepository {
     try {
       const memberships = await UserMembership.findAll();
       return {
-        status: "ok",
+        status: "success",
         result: memberships,
       };
     } catch (error) {

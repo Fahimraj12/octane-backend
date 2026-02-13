@@ -6,7 +6,7 @@ class MemberRepository {
     try {
       const members = await Member.findAll();
       return {
-        status: "ok",
+        status: "success",
         result: members,
       };
     } catch (error) {
@@ -29,7 +29,7 @@ class MemberRepository {
       }
 
       return {
-        status: "ok",
+        status: "success",
         result: member,
       };
     } catch (error) {
@@ -81,7 +81,7 @@ class MemberRepository {
 
       const updatedMember = await member.update(data);
       return {
-        status: "ok",
+        status: "success",
         result: "updatedMember updated successfully",
       };
     } catch (error) {
@@ -105,7 +105,7 @@ class MemberRepository {
 
       await member.destroy();
       return {
-        status: "ok",
+        status: "success",
         result: "Member deleted successfully",
       };
     } catch (error) {

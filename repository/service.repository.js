@@ -6,7 +6,7 @@ class ServiceRepository {
     try {
       const services = await Service.findAll();
       return {
-        status: "ok",
+        status: "success",
         result: services,
       };
     } catch (error) {
@@ -29,7 +29,7 @@ class ServiceRepository {
       }
 
       return {
-        status: "ok",
+        status: "success",
         result: service,
       };
     } catch (error) {
@@ -82,7 +82,7 @@ class ServiceRepository {
 
       const updatedService = await service.update(data);
       return {
-        status: "ok",
+        status: "success",
         result: "Updated Service Successfully",
       };
     } catch (error) {
@@ -106,7 +106,7 @@ class ServiceRepository {
 
       await service.destroy();
       return {
-        status: "ok",
+        status: "success",
         result: "Service deleted successfully",
       };
     } catch (error) {
