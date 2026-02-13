@@ -14,6 +14,11 @@ exports.getPackage = async (req, res) => {
       id: pkg.id,
       service_title: pkg.service_title,
       title: pkg.title,
+      no_of_sessions: pkg.no_of_sessions,
+      slots: pkg.slots,
+      mrp: pkg.mrp,
+      discount: pkg.discount,
+      selling_price: pkg.selling_price,
     }));
 
     res.status(200).json({
