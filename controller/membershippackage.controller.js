@@ -5,7 +5,7 @@ exports.getAllMembershipPackages = async (req, res) => {
   try {
     const response = await MembershipPackageRepository.getAllMembershipPackages();
 
-    if (response.status !== "ok") {
+    if (response.status !== "success") {
       return res.status(500).json(response);
     }
 
