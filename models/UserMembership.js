@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const MembershipPackage = require("./MembershipPackage");
 
 const UserMembership = sequelize.define(
   "UserMembership",
@@ -9,21 +10,17 @@ const UserMembership = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
-      type: DataTypes.STRING,
+    member_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING,
+    membershippackage_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-    },
-    mobile: {
-      type: DataTypes.STRING(15),
-      allowNull: false,
-    },
-    membership_type: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      references: {
+        model: MembershipPackage,
+        key: "id",
+      },
     },
     status: {
       type: DataTypes.ENUM('active', 'inactive'),
@@ -47,6 +44,10 @@ const UserMembership = sequelize.define(
     },
     trainer_assigned: {
       type: DataTypes.ENUM('yes', 'no'),
+      allowNull: true,
+    },
+    payment_history: {
+      type: DataTypes.JSON,
       allowNull: true,
     },
     createdAt: {

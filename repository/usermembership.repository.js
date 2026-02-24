@@ -16,6 +16,27 @@ class UserMembershipRepository {
       };
     }
   }
+  // Get a user membership by ID
+  async getUserMembershipById(id) {
+    try {
+      const membershipRecord = await UserMembership.findByPk(id);
+      if (!membershipRecord) {
+        return {
+          status: "fail",
+          result: "User Membership not found",
+        };
+      }
+      return {
+        status: "success",
+        result: membershipRecord,
+      };
+    } catch (error) {
+      return {
+        status: "error",
+        result: error.message,
+      };
+    }
+  }
 
   // Create a new user membership
   async createUserMembership(data) {

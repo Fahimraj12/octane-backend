@@ -17,28 +17,55 @@ exports.getAllUserMemberships = async (req, res) => {
     });
   }
 };
+// get by id
+exports.getUserMembershipById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await UserMembershipRepository.getUserMembershipById(id);
+
+    if (response.status === "fail") {
+      return res.status(404).json(response);
+    }
+
+    if (response.status === "error") {
+      return res.status(500).json(response);
+    }
+
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
 
 // CREATE user membership
 exports.createUserMembership = async (req, res) => {
   try {
-    const { name, email, mobile, membership_type, status, start_at, end_at, amount_paid, payment_method, trainer_assigned } = req.body;
+    const { member_id, membershippackage_id, status, start_at, end_at, amount_paid, payment_method, trainer_assigned } = req.body;
 
     // validation
-    if (!name || !email || !mobile || !membership_type || !status || !start_at || !end_at || !amount_paid || !payment_method) {
+    if (!member_id || !membershippackage_id || !status || !start_at || !end_at || !amount_paid || !payment_method) {
       return res.status(400).json({
         status: "fail",
         message: "All fields are required",
       });
     }
-
+    // calculate total from payment history
+    const totalPaid = (payment_history || []).reduce((total, payment) => total + parseFloat(payment.amount), 0);
+    if (totalPaid + parseFloat(amount_paid) > membershippackage_id.price) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Amount paid exceeds package price",
+      });
+    }
     const response = await UserMembershipRepository.createUserMembership({
-      name,
-      email,
-      mobile,
-      membership_type,
+      member_id,
+      membershippackage_id,
+      status,
       start_at,
       end_at,
-      status,
       amount_paid,
       payment_method,
       trainer_assigned,
@@ -62,6 +89,16 @@ exports.createUserMembership = async (req, res) => {
 exports.updateUserMembership = async (req, res) => {
   try {
     const { id } = req.params;
+    const { payment_history } = req.body;
+    if (payment_history) {
+      const totalPaid = payment_history.reduce((total, payment) => total + parseFloat(payment.amount), 0);
+      if (totalPaid > req.body.membershippackage_id.price) {
+        return res.status(400).json({
+          status: "fail",
+          message: "Total amount paid exceeds package price",
+        });
+      }
+    }
     const response = await UserMembershipRepository.updateUserMembership(id, req.body);
     if (response.status === "fail") {
       return res.status(404).json(response);
