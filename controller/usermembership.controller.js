@@ -1,5 +1,5 @@
 const UserMembershipRepository = require("../repository/usermembership.repository");
-const MembershipPackage = require("../model/membershippackage");
+const MembershipPackage = require("../models/MembershipPackage");
 
 // CREATE USER MEMBERSHIP
 exports.createUserMembership = async (req, res) => {
