@@ -1,5 +1,5 @@
-const UserMembership = require("../model/usermembership");
-const MembershipPackage = require("../model/membershippackage");
+const UserMembership = require("../models/UserMembership");
+const MembershipPackage = require("../models/MembershipPackage");
 
 class UserMembershipRepository {
 
