@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-const MembershipPackage = require("./MembershipPackage");
 
 const UserMembership = sequelize.define(
   "UserMembership",
@@ -10,56 +9,52 @@ const UserMembership = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
+
     member_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+
     membershippackage_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: MembershipPackage,
-        key: "id",
-      },
     },
+
     status: {
-      type: DataTypes.ENUM('active', 'inactive'),
-      allowNull: false,
+      type: DataTypes.ENUM("active", "inactive", "expired"),
+      defaultValue: "active",
     },
+
     start_at: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
+
     end_at: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
+
     amount_paid: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+      type: DataTypes.FLOAT,
+      defaultValue: 0,
     },
-    payment_method: {
-      type: DataTypes.ENUM('cash', 'card', 'online'),
-      allowNull: false,
-    },
-    trainer_assigned: {
-      type: DataTypes.ENUM('yes', 'no'),
-      allowNull: true,
-    },
+
     payment_history: {
       type: DataTypes.JSON,
       allowNull: true,
+      defaultValue: [],
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
+
+    trainer_assigned: {
+      type: DataTypes.ENUM("yes", "no"),
+      defaultValue: "no",
     },
   },
   {
-    tableName: "UserMemberships", // ✅ correct table
-    timestamps: false,
-  },
+    tableName: "user_memberships",
+    timestamps: true,
+  }
 );
 
 module.exports = UserMembership;

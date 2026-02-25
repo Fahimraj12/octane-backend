@@ -1,107 +1,74 @@
-const UserMembership = require("../models/UserMembership");
+const UserMembership = require("../model/usermembership");
+const MembershipPackage = require("../model/membershippackage");
 
 class UserMembershipRepository {
-  // Get all user memberships
-  async getAllUserMemberships() {
+
+  static async getAllUserMemberships() {
     try {
-      const memberships = await UserMembership.findAll();
-      return {
-        status: "success",
-        result: memberships,
-      };
+      const data = await UserMembership.findAll({
+        order: [["createdAt", "DESC"]],
+      });
+
+      return { status: "success", result: data };
     } catch (error) {
-      return {
-        status: "error",
-        result: error.message,
-      };
-    }
-  }
-  // Get a user membership by ID
-  async getUserMembershipById(id) {
-    try {
-      const membershipRecord = await UserMembership.findByPk(id);
-      if (!membershipRecord) {
-        return {
-          status: "fail",
-          result: "User Membership not found",
-        };
-      }
-      return {
-        status: "success",
-        result: membershipRecord,
-      };
-    } catch (error) {
-      return {
-        status: "error",
-        result: error.message,
-      };
+      return { status: "error", message: error.message };
     }
   }
 
-  // Create a new user membership
-  async createUserMembership(data) {
+  static async getUserMembershipById(id) {
     try {
-      const newMembership = await UserMembership.create(data);
-      return {
-        status: "success",
-        result: "newMembership created successfully",
-      };
-    } catch (error) {
-      return {
-        status: "error",
-        result: error.message,
-      };
-    }
-  }
+      const data = await UserMembership.findByPk(id);
 
-  // Update a user membership by ID
-  async updateUserMembership(id, data) {
-    try {
-      const membershipRecord = await UserMembership.findByPk(id);
-      if (!membershipRecord) {
-        return {
-          status: "fail",
-          result: "User Membership not found",
-        };
+      if (!data) {
+        return { status: "fail", message: "Membership not found" };
       }
 
-      await membershipRecord.update(data);
-      return {
-        status: "success",
-        result: "membershipRecord updated successfully",
-      };
-    }
-    catch (error) {
-      return {
-        status: "error",
-        result: error.message,
-      };
+      return { status: "success", result: data };
+    } catch (error) {
+      return { status: "error", message: error.message };
     }
   }
 
-  // Delete a user membership by ID
-  async deleteUserMembership(id) {
+  static async createUserMembership(payload) {
     try {
-      const membershipRecord = await UserMembership.findByPk(id);
-      if (!membershipRecord) {
-        return {
-          status: "fail",
-          result: "User Membership not found",
-        };
+      const data = await UserMembership.create(payload);
+      return { status: "success", result: data };
+    } catch (error) {
+      return { status: "error", message: error.message };
+    }
+  }
+
+  static async updateUserMembership(id, payload) {
+    try {
+      const membership = await UserMembership.findByPk(id);
+
+      if (!membership) {
+        return { status: "fail", message: "Membership not found" };
       }
 
-      await membershipRecord.destroy();
-      return {
-        status: "success",
-        result: "User Membership deleted successfully",
-      };
+      await membership.update(payload);
+
+      return { status: "success", result: membership };
     } catch (error) {
-      return {
-        status: "error",
-        result: error.message,
-      };
+      return { status: "error", message: error.message };
+    }
+  }
+
+  static async deleteUserMembership(id) {
+    try {
+      const membership = await UserMembership.findByPk(id);
+
+      if (!membership) {
+        return { status: "fail", message: "Membership not found" };
+      }
+
+      await membership.destroy();
+
+      return { status: "success", message: "Membership deleted successfully" };
+    } catch (error) {
+      return { status: "error", message: error.message };
     }
   }
 }
 
-module.exports = new UserMembershipRepository();
+module.exports = UserMembershipRepository;
