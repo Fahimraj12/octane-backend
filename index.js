@@ -57,7 +57,7 @@ app.get("/", (req, res) => {
     await sequelize.authenticate();
     console.log("✅ Database connected");
 
-    await sequelize.sync({ alter: true });
+    await sequelize.sync();
     console.log("✅ Tables created / updated");
 
     const PORT = process.env.PORT || 5000;
