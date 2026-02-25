@@ -1,11 +1,15 @@
 const UserMembership = require("../models/UserMembership");
 const MembershipPackage = require("../models/MembershipPackage");
-
+const Member = require("../models/Member");
 class UserMembershipRepository {
 
   static async getAllUserMemberships() {
     try {
       const data = await UserMembership.findAll({
+        include: [
+          { model: Member, as: "member" },
+          { model: MembershipPackage, as: "membershipPackage" },
+        ],
         order: [["createdAt", "DESC"]],
       });
 

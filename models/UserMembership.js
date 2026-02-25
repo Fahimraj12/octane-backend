@@ -58,3 +58,13 @@ const UserMembership = sequelize.define(
 );
 
 module.exports = UserMembership;
+
+const Member = require("./Member");
+const MembershipPackage = require("./MembershipPackage");
+
+// Associations
+UserMembership.belongsTo(Member, { foreignKey: "member_id", as: "member" });
+UserMembership.belongsTo(MembershipPackage, {
+  foreignKey: "membershippackage_id",
+  as: "membershipPackage",
+}); 
