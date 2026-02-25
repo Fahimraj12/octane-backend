@@ -7,8 +7,11 @@ class UserMembershipRepository {
     try {
       const data = await UserMembership.findAll({
         include: [
-          { model: Member, as: "member" },
-          { model: MembershipPackage, as: "membershipPackage" },
+          {
+            model: Member, as: "member", attributes: ["id", "name", "email", "phone"
+            ]
+          },
+          { model: MembershipPackage, as: "membershipPackage", attributes: ["id", "name", "price"] },
         ],
         order: [["createdAt", "DESC"]],
       });
