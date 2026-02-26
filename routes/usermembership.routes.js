@@ -6,6 +6,6 @@ router.post("/add-user-membership", controller.createUserMembership);
 router.get("/get-user-memberships", controller.getAllUserMemberships);
 router.put("/update-user-membership/:id", controller.updateUserMembership);
 router.delete("/delete-user-membership/:id", controller.deleteUserMembership);
-router.get("/expiring", userMembershipController.getExpiringMemberships);
+router.get("/expiring", controller.getExpiringMemberships);
 
 module.exports = router;
