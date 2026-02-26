@@ -201,20 +201,22 @@ exports.getExpiringMemberships = async (req, res) => {
 
     const memberships = await UserMembership.findAll({
       where: {
-        end_date: {
-          [Op.between]: [today, next29Days],
+        end_at: {
+          [Op.gte]: today,
+          [Op.lte]: next29Days,
         },
         status: "active",
       },
-      order: [["end_date", "ASC"]],
+      order: [["end_at", "ASC"]],
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       data: memberships,
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("Expiring Membership Error:", error);
+    return res.status(500).json({
       status: "error",
       message: error.message,
     });
