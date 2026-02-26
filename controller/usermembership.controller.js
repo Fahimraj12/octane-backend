@@ -1,5 +1,7 @@
 const UserMembershipRepository = require("../repository/usermembership.repository");
 const MembershipPackage = require("../models/MembershipPackage");
+const { Op } = require("sequelize");
+const UserMembership = require("../models/UserMembership");
 
 // CREATE USER MEMBERSHIP
 exports.createUserMembership = async (req, res) => {
@@ -180,6 +182,37 @@ exports.deleteUserMembership = async (req, res) => {
 
     res.status(200).json(response);
 
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+
+// expiring memberships
+
+exports.getExpiringMemberships = async (req, res) => {
+  try {
+    const today = new Date();
+
+    const next29Days = new Date();
+    next29Days.setDate(today.getDate() + 29);
+
+    const memberships = await UserMembership.findAll({
+      where: {
+        end_date: {
+          [Op.between]: [today, next29Days],
+        },
+        status: "active",
+      },
+      order: [["end_date", "ASC"]],
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: memberships,
+    });
   } catch (error) {
     res.status(500).json({
       status: "error",
