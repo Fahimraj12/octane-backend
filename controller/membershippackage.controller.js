@@ -31,14 +31,13 @@ exports.createMembershipPackage = async (req, res) => {
       status,
     } = req.body;
 
-    // validation
     if (
       !name ||
       !membership_type ||
       !duration ||
-      !mrp ||
-      !discount ||
-      !selling_price ||
+      mrp == null ||
+      discount == null ||
+      selling_price == null ||
       !status
     ) {
       return res.status(400).json({
@@ -47,16 +46,17 @@ exports.createMembershipPackage = async (req, res) => {
       });
     }
 
-    const response = await MembershipPackageRepository.createMembershipPackage({
-      name,
-      membership_type,
-      duration,
-      mrp,
-      discount,
-      selling_price,
-      status,
-      createdAt: new Date(),
-    });
+    const response =
+      await MembershipPackageRepository.createMembershipPackage({
+        name,
+        membership_type,
+        duration,
+        mrp: parseFloat(mrp),
+        discount: parseFloat(discount),
+        selling_price: parseFloat(selling_price),
+        status,
+        createdAt: new Date(),
+      });
 
     if (response.status !== "success") {
       return res.status(500).json(response);
