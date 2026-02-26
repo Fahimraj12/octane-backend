@@ -194,16 +194,17 @@ exports.deleteUserMembership = async (req, res) => {
 
 exports.getExpiringMemberships = async (req, res) => {
   try {
-    const today = new Date();
+    // Convert today to YYYY-MM-DD format
+    const today = new Date().toISOString().split("T")[0];
 
     const next29Days = new Date();
-    next29Days.setDate(today.getDate() + 29);
+    next29Days.setDate(next29Days.getDate() + 29);
+    const nextDateFormatted = next29Days.toISOString().split("T")[0];
 
     const memberships = await UserMembership.findAll({
       where: {
         end_at: {
-          [Op.gte]: today,
-          [Op.lte]: next29Days,
+          [Op.between]: [today, nextDateFormatted],
         },
         status: "active",
       },
