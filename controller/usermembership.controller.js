@@ -2,6 +2,8 @@ const UserMembershipRepository = require("../repository/usermembership.repositor
 const MembershipPackage = require("../models/MembershipPackage");
 const { Op } = require("sequelize");
 const UserMembership = require("../models/UserMembership");
+const Member = require("../models/Member");
+
 
 // CREATE USER MEMBERSHIP
 exports.createUserMembership = async (req, res) => {
@@ -194,24 +196,29 @@ exports.deleteUserMembership = async (req, res) => {
 
 exports.getExpiringMemberships = async (req, res) => {
   try {
-    // 🔥 Use LOCAL date instead of UTC
-    const todayObj = new Date();
-    const today = new Date(
-      todayObj.getFullYear(),
-      todayObj.getMonth(),
-      todayObj.getDate()
-    );
-
-    const next29Days = new Date(today);
-    next29Days.setDate(next29Days.getDate() + 29);
+    const today = new Date();
+    const next29Days = new Date();
+    next29Days.setDate(today.getDate() + 29);
 
     const memberships = await UserMembership.findAll({
       where: {
+        status: "active",
         end_at: {
           [Op.between]: [today, next29Days],
         },
-        status: "active",
       },
+      include: [
+        {
+          model: Member,
+          as: "member",
+          attributes: ["id", "name", "email", "mobile"],
+        },
+        {
+          model: MembershipPackage,
+          as: "membershipPackage",
+          attributes: ["id", "name", "selling_price"],
+        },
+      ],
       order: [["end_at", "ASC"]],
     });
 
