@@ -192,19 +192,25 @@ exports.deleteUserMembership = async (req, res) => {
 
 // expiring memberships
 
+const { Op } = require("sequelize");
+
 exports.getExpiringMemberships = async (req, res) => {
   try {
-    // Convert today to YYYY-MM-DD format
-    const today = new Date().toISOString().split("T")[0];
+    // 🔥 Use LOCAL date instead of UTC
+    const todayObj = new Date();
+    const today = new Date(
+      todayObj.getFullYear(),
+      todayObj.getMonth(),
+      todayObj.getDate()
+    );
 
-    const next29Days = new Date();
+    const next29Days = new Date(today);
     next29Days.setDate(next29Days.getDate() + 29);
-    const nextDateFormatted = next29Days.toISOString().split("T")[0];
 
     const memberships = await UserMembership.findAll({
       where: {
         end_at: {
-          [Op.between]: [today, nextDateFormatted],
+          [Op.between]: [today, next29Days],
         },
         status: "active",
       },
