@@ -10,8 +10,9 @@ const Package = sequelize.define(
       primaryKey: true,
     },
 
-    service_id: {
-      type: DataTypes.INTEGER,
+    // Service Info
+    service_category: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
 
@@ -20,12 +21,12 @@ const Package = sequelize.define(
       allowNull: false,
     },
 
-    no_of_sessions: {
+    duration_in_days: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
 
-    duration_in_days: {
+    no_of_sessions: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -35,6 +36,7 @@ const Package = sequelize.define(
       allowNull: true,
     },
 
+    // Pricing
     mrp_price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
@@ -51,11 +53,7 @@ const Package = sequelize.define(
       defaultValue: 0,
     },
 
-    selling_price: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-    },
-
+    // Image
     image: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -66,43 +64,47 @@ const Package = sequelize.define(
       allowNull: true,
     },
 
+    // Appointment Settings
     appointment_slot_minutes: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
 
     appointment_start: {
-      type: DataTypes.STRING,
+      type: DataTypes.TIME,
       allowNull: false,
     },
 
     appointment_end: {
-      type: DataTypes.STRING,
+      type: DataTypes.TIME,
       allowNull: false,
     },
 
     blocked_start: {
-      type: DataTypes.STRING,
+      type: DataTypes.TIME,
       allowNull: false,
     },
 
     blocked_end: {
-      type: DataTypes.STRING,
+      type: DataTypes.TIME,
       allowNull: false,
     },
 
+    // Week Days (Stored as JSON)
     week_days: {
-      type: DataTypes.JSON,   // 👈 store array
+      type: DataTypes.JSON,
       allowNull: false,
     },
 
+    // Optional Status
     status: {
-      type: DataTypes.ENUM("Active", "Inactive"),
-      defaultValue: "Active",
+      type: DataTypes.ENUM("active", "inactive"),
+      defaultValue: "active",
     },
 
     createdAt: {
       type: DataTypes.DATE,
+      allowNull: false,
       defaultValue: DataTypes.NOW,
     },
   },

@@ -12,13 +12,22 @@ exports.getPackage = async (req, res) => {
     // sirf required data return
     const data = response.result.map(pkg => ({
       id: pkg.id,
-      service_title: pkg.service_title,
+      service: pkg.service_category,
       title: pkg.title,
-      no_of_sessions: pkg.no_of_sessions,
-      slots: pkg.slots,
-      mrp: pkg.mrp,
-      discount: pkg.discount,
-      selling_price: pkg.selling_price,
+      duration_in_days: pkg.duration_in_days,
+      sessions: pkg.no_of_sessions,
+      short_description: pkg.short_description,
+      mrp_price: pkg.mrp_price,
+      discount_price: pkg.discount_price,
+      gst_percentage: pkg.gst_percentage,
+      package_includes: pkg.package_includes,
+      appointment_slot_minutes: pkg.appointment_slot_minutes,
+      appointment_start: pkg.appointment_start,
+      appointment_end: pkg.appointment_end,
+      blocked_start: pkg.blocked_start,
+      blocked_end: pkg.blocked_end,
+      week_days: pkg.week_days,
+      price: pkg.mrp_price
     }));
 
     res.status(200).json({
@@ -36,41 +45,35 @@ exports.getPackage = async (req, res) => {
 // CREATE Package
 exports.CreatePackage = async (req, res) => {
   try {
-    const {
-      service_title,
-      title,
-      no_of_sessions,
-      slots,
-      mrp,
-      discount,
-      selling_price,
-    } = req.body;
+    const body = req.body;
 
-    // validation
-    if (
-      !service_title ||
-      !title ||
-      !no_of_sessions ||
-      !slots ||
-      !mrp ||
-      discount === undefined ||
-      !selling_price
-    ) {
-      return res.status(400).json({
-        status: "fail",
-        message: "All fields are required",
-      });
+    // Parse week_days JSON
+    let weekDays = req.body.week_days;
+
+    if (typeof weekDays === "string") {
+      weekDays = JSON.parse(weekDays);
     }
 
-    const response = await PackageRepository.createPackage({
-      service_title,
-      title,
-      no_of_sessions,
-      slots,
-      mrp,
-      discount,
-      selling_price,
-    });
+    const packageData = {
+      service_category: body.service_category,
+      title: body.title,
+      duration_in_days: body.duration_in_days,
+      no_of_sessions: body.no_of_sessions,
+      short_description: body.short_description,
+      mrp_price: body.mrp_price,
+      discount_price: body.discount_price,
+      gst_percentage: body.gst_percentage,
+      package_includes: body.package_includes,
+      appointment_slot_minutes: body.appointment_slot_minutes,
+      appointment_start: body.appointment_start,
+      appointment_end: body.appointment_end,
+      blocked_start: body.blocked_start,
+      blocked_end: body.blocked_end,
+      week_days: weekDays,
+      image: req.file ? req.file.filename : null,
+    };
+
+    const response = await PackageRepository.createPackage(packageData);
 
     res.status(201).json(response);
   } catch (error) {
@@ -81,12 +84,42 @@ exports.CreatePackage = async (req, res) => {
   }
 };
 
+
 // UPDATE Package
 exports.updatePackage = async (req, res) => {
   try {
     const { id } = req.params;
+    const body = req.body;
 
-    const response = await PackageRepository.updatePackage(id, req.body);
+    let weekDays = req.body.week_days;
+
+    if (typeof weekDays === "string") {
+      weekDays = JSON.parse(weekDays);
+    }
+
+    const updateData = {
+      service_category: body.service_category,
+      title: body.title,
+      duration_in_days: body.duration_in_days,
+      no_of_sessions: body.no_of_sessions,
+      short_description: body.short_description,
+      mrp_price: body.mrp_price,
+      discount_price: body.discount_price,
+      gst_percentage: body.gst_percentage,
+      package_includes: body.package_includes,
+      appointment_slot_minutes: body.appointment_slot_minutes,
+      appointment_start: body.appointment_start,
+      appointment_end: body.appointment_end,
+      blocked_start: body.blocked_start,
+      blocked_end: body.blocked_end,
+      week_days: weekDays,
+    };
+
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+
+    const response = await PackageRepository.updatePackage(id, updateData);
 
     if (response.status === "fail") {
       return res.status(404).json(response);
@@ -100,6 +133,7 @@ exports.updatePackage = async (req, res) => {
     });
   }
 };
+
 
 // DELETE Package
 exports.deletePackage = async (req, res) => {
