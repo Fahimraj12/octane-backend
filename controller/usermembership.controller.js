@@ -192,8 +192,6 @@ exports.deleteUserMembership = async (req, res) => {
 
 // expiring memberships
 
-const { Op } = require("sequelize");
-
 exports.getExpiringMemberships = async (req, res) => {
   try {
     // 🔥 Use LOCAL date instead of UTC
