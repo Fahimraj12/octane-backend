@@ -15,6 +15,7 @@ const inquiriesRouter = require("./routes/inquiries.routes");
 const membershippackageRouter = require("./routes/membershippackage.routes");
 const usermembershipRouter = require("./routes/usermembership.routes");
 const dashboardRoutes = require("./routes/dashboard.routes");
+const appointmentRouter = require("./routes/appointment.routes");
 
 
 // import models (IMPORTANT)
@@ -28,6 +29,7 @@ require("./models/Payment");
 require("./models/Inquiries");
 require("./models/MembershipPackage");
 require("./models/UserMembership");
+require("./models/Appointment");
 // require associations
 // require("./associations");
 const app = express();
@@ -45,6 +47,7 @@ app.use("/api/inquiries", inquiriesRouter);
 app.use("/api/membershippackage", membershippackageRouter);
 app.use("/api/usermembership", usermembershipRouter);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/appointment", appointmentRouter);
 
 
 // test route
