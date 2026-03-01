@@ -1,6 +1,9 @@
 const PackageRepository = require("../repository/package.repository");
 
-// GET all packages (sirf service_title dikhana)
+
+// =========================
+// ✅ GET ALL PACKAGES
+// =========================
 exports.getPackage = async (req, res) => {
   try {
     const response = await PackageRepository.getAllPackage();
@@ -9,16 +12,17 @@ exports.getPackage = async (req, res) => {
       return res.status(500).json(response);
     }
 
-    // sirf required data return
     const data = response.result.map(pkg => ({
       id: pkg.id,
-      service: pkg.service_category,
+      service_id: pkg.service_id,
+      service: pkg.service ? pkg.service.title : null,
       title: pkg.title,
       duration_in_days: pkg.duration_in_days,
       sessions: pkg.no_of_sessions,
       short_description: pkg.short_description,
       mrp_price: pkg.mrp_price,
       discount_price: pkg.discount_price,
+      selling_price: pkg.selling_price,
       gst_percentage: pkg.gst_percentage,
       package_includes: pkg.package_includes,
       appointment_slot_minutes: pkg.appointment_slot_minutes,
@@ -27,14 +31,17 @@ exports.getPackage = async (req, res) => {
       blocked_start: pkg.blocked_start,
       blocked_end: pkg.blocked_end,
       week_days: pkg.week_days,
-      price: pkg.mrp_price
+      image: pkg.image,
+      price: pkg.mrp_price,
     }));
 
     res.status(200).json({
       status: "success",
       result: data,
     });
+
   } catch (error) {
+    console.error("GET PACKAGE ERROR:", error);
     res.status(500).json({
       status: "error",
       message: error.message,
@@ -42,33 +49,39 @@ exports.getPackage = async (req, res) => {
   }
 };
 
-// CREATE Package
+
+
+// =========================
+// ✅ CREATE PACKAGE
+// =========================
 exports.CreatePackage = async (req, res) => {
   try {
-    const body = req.body;
 
-    // Parse week_days JSON
-    let weekDays = req.body.week_days;
+    let weekDays = [];
 
-    if (typeof weekDays === "string") {
-      weekDays = JSON.parse(weekDays);
+    if (req.body.week_days) {
+      weekDays =
+        typeof req.body.week_days === "string"
+          ? JSON.parse(req.body.week_days)
+          : req.body.week_days;
     }
 
     const packageData = {
-      service_category: body.service_category,
-      title: body.title,
-      duration_in_days: body.duration_in_days,
-      no_of_sessions: body.no_of_sessions,
-      short_description: body.short_description,
-      mrp_price: body.mrp_price,
-      discount_price: body.discount_price,
-      gst_percentage: body.gst_percentage,
-      package_includes: body.package_includes,
-      appointment_slot_minutes: body.appointment_slot_minutes,
-      appointment_start: body.appointment_start,
-      appointment_end: body.appointment_end,
-      blocked_start: body.blocked_start,
-      blocked_end: body.blocked_end,
+      service_id: req.body.service_id,   // ✅ important
+      title: req.body.title,
+      duration_in_days: req.body.duration_in_days,
+      no_of_sessions: req.body.no_of_sessions,
+      short_description: req.body.short_description,
+      mrp_price: req.body.mrp_price,
+      discount_price: req.body.discount_price,
+      selling_price: req.body.selling_price,
+      gst_percentage: req.body.gst_percentage,
+      package_includes: req.body.package_includes,
+      appointment_slot_minutes: req.body.appointment_slot_minutes,
+      appointment_start: req.body.appointment_start,
+      appointment_end: req.body.appointment_end,
+      blocked_start: req.body.blocked_start,
+      blocked_end: req.body.blocked_end,
       week_days: weekDays,
       image: req.file ? req.file.filename : null,
     };
@@ -76,7 +89,9 @@ exports.CreatePackage = async (req, res) => {
     const response = await PackageRepository.createPackage(packageData);
 
     res.status(201).json(response);
+
   } catch (error) {
+    console.error("CREATE PACKAGE ERROR:", error);
     res.status(500).json({
       status: "error",
       message: error.message,
@@ -85,33 +100,39 @@ exports.CreatePackage = async (req, res) => {
 };
 
 
-// UPDATE Package
+
+// =========================
+// ✅ UPDATE PACKAGE
+// =========================
 exports.updatePackage = async (req, res) => {
   try {
     const { id } = req.params;
-    const body = req.body;
 
-    let weekDays = req.body.week_days;
+    let weekDays = [];
 
-    if (typeof weekDays === "string") {
-      weekDays = JSON.parse(weekDays);
+    if (req.body.week_days) {
+      weekDays =
+        typeof req.body.week_days === "string"
+          ? JSON.parse(req.body.week_days)
+          : req.body.week_days;
     }
 
     const updateData = {
-      service_category: body.service_category,
-      title: body.title,
-      duration_in_days: body.duration_in_days,
-      no_of_sessions: body.no_of_sessions,
-      short_description: body.short_description,
-      mrp_price: body.mrp_price,
-      discount_price: body.discount_price,
-      gst_percentage: body.gst_percentage,
-      package_includes: body.package_includes,
-      appointment_slot_minutes: body.appointment_slot_minutes,
-      appointment_start: body.appointment_start,
-      appointment_end: body.appointment_end,
-      blocked_start: body.blocked_start,
-      blocked_end: body.blocked_end,
+      service_id: req.body.service_id,  // ✅ important
+      title: req.body.title,
+      duration_in_days: req.body.duration_in_days,
+      no_of_sessions: req.body.no_of_sessions,
+      short_description: req.body.short_description,
+      mrp_price: req.body.mrp_price,
+      discount_price: req.body.discount_price,
+      selling_price: req.body.selling_price,
+      gst_percentage: req.body.gst_percentage,
+      package_includes: req.body.package_includes,
+      appointment_slot_minutes: req.body.appointment_slot_minutes,
+      appointment_start: req.body.appointment_start,
+      appointment_end: req.body.appointment_end,
+      blocked_start: req.body.blocked_start,
+      blocked_end: req.body.blocked_end,
       week_days: weekDays,
     };
 
@@ -126,7 +147,9 @@ exports.updatePackage = async (req, res) => {
     }
 
     res.status(200).json(response);
+
   } catch (error) {
+    console.error("UPDATE PACKAGE ERROR:", error);
     res.status(500).json({
       status: "error",
       message: error.message,
@@ -135,7 +158,10 @@ exports.updatePackage = async (req, res) => {
 };
 
 
-// DELETE Package
+
+// =========================
+// ✅ DELETE PACKAGE
+// =========================
 exports.deletePackage = async (req, res) => {
   try {
     const { id } = req.params;
@@ -147,7 +173,9 @@ exports.deletePackage = async (req, res) => {
     }
 
     res.status(200).json(response);
+
   } catch (error) {
+    console.error("DELETE PACKAGE ERROR:", error);
     res.status(500).json({
       status: "error",
       message: error.message,

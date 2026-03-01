@@ -1,31 +1,18 @@
 const Package = require("../models/Package");
+const Service = require("../models/Service");
 
 class PackageRepository {
-  // GET all packages
+
   async getAllPackage() {
     try {
       const pkg = await Package.findAll({
-        attributes: [
-          "id",
-          "service_category",
-          "title",
-          "duration_in_days",
-          "no_of_sessions",
-          "short_description",
-          "mrp_price",
-          "discount_price",
-          "gst_percentage",
-          "image",
-          "package_includes",
-          "appointment_slot_minutes",
-          "appointment_start",
-          "appointment_end",
-          "blocked_start",
-          "blocked_end",
-          "week_days",
-          "status"
+        include: [
+          {
+            model: Service,
+            as: "service",
+            attributes: ["id", "title"],
+          },
         ],
-
       });
 
       return {
@@ -40,7 +27,6 @@ class PackageRepository {
     }
   }
 
-  // CREATE package
   async createPackage(data) {
     try {
       const existingPackage = await Package.findOne({
@@ -68,7 +54,6 @@ class PackageRepository {
     }
   }
 
-  // UPDATE package
   async updatePackage(id, data) {
     try {
       const pkg = await Package.findByPk(id);
@@ -94,7 +79,6 @@ class PackageRepository {
     }
   }
 
-  // DELETE package
   async deletePackage(id) {
     try {
       const pkg = await Package.findByPk(id);

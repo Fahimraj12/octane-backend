@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const Service = require("./Service");
 
 const Package = sequelize.define(
   "Package",
@@ -10,9 +11,9 @@ const Package = sequelize.define(
       primaryKey: true,
     },
 
-    // Service Info
-    service_category: {
-      type: DataTypes.STRING,
+    // 🔥 Foreign Key
+    service_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
 
@@ -33,10 +34,8 @@ const Package = sequelize.define(
 
     short_description: {
       type: DataTypes.TEXT,
-      allowNull: true,
     },
 
-    // Pricing
     mrp_price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
@@ -46,25 +45,23 @@ const Package = sequelize.define(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
-
+    selling_price: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
     gst_percentage: {
       type: DataTypes.DECIMAL(5, 2),
-      allowNull: false,
       defaultValue: 0,
     },
 
-    // Image
     image: {
       type: DataTypes.STRING,
-      allowNull: true,
     },
 
     package_includes: {
       type: DataTypes.TEXT,
-      allowNull: true,
     },
 
-    // Appointment Settings
     appointment_slot_minutes: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -90,22 +87,14 @@ const Package = sequelize.define(
       allowNull: false,
     },
 
-    // Week Days (Stored as JSON)
     week_days: {
       type: DataTypes.JSON,
       allowNull: false,
     },
 
-    // Optional Status
     status: {
       type: DataTypes.ENUM("active", "inactive"),
       defaultValue: "active",
-    },
-
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
     },
   },
   {
@@ -113,5 +102,16 @@ const Package = sequelize.define(
     timestamps: false,
   }
 );
+
+
+// 🔥 ASSOCIATIONS
+Package.belongsTo(Service, {
+  foreignKey: "service_id",
+  as: "service",
+});
+
+Service.hasMany(Package, {
+  foreignKey: "service_id",
+});
 
 module.exports = Package;
