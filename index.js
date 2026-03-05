@@ -16,6 +16,9 @@ const membershippackageRouter = require("./routes/membershippackage.routes");
 const usermembershipRouter = require("./routes/usermembership.routes");
 const dashboardRoutes = require("./routes/dashboard.routes");
 const appointmentRouter = require("./routes/appointment.routes");
+const levelRouter = require("./routes/level.routes");
+const fitnessRouter = require("./routes/fitness.routes");
+const equipmentRouter = require("./routes/equipment.routes");
 
 
 // import models (IMPORTANT)
@@ -30,6 +33,9 @@ require("./models/Inquiries");
 require("./models/MembershipPackage");
 require("./models/UserMembership");
 require("./models/Appointment");
+require("./models/Level");
+require("./models/FitnessGoal");
+require("./models/EquipmentList");
 // require associations
 // require("./associations");
 const app = express();
@@ -48,7 +54,9 @@ app.use("/api/membershippackage", membershippackageRouter);
 app.use("/api/usermembership", usermembershipRouter);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/appointment", appointmentRouter);
-
+app.use("/api/level", levelRouter);
+app.use("/api/fitness", fitnessRouter);
+app.use("/api/equipment", equipmentRouter);
 
 // test route
 app.get("/", (req, res) => {
@@ -60,7 +68,7 @@ app.get("/", (req, res) => {
     await sequelize.authenticate();
     console.log("✅ Database connected");
 
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     console.log("✅ Tables created / updated");
 
     const PORT = process.env.PORT || 5000;
